@@ -1,11 +1,9 @@
-# ftx-api
+# ftx funding payments collection bot
 
 ## Description
-透過 Line Notify 獲得每日期現套利收益報告，每小時提供當一小時獲利，每天UTC 00:00提供前一天獲利，效果如下圖。
+Get your ftx funding payments information and send you through Line Notify bot. You will have your funding payment info hourly and daily summary.
 
 ![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/line.jpg)
-
-## 使用說明
 
 ### All you have to prepare:
 1. [Line Notify API Key](https://notify-bot.line.me/zh_TW/)：到網站申請一組API_KEY，並連結到你要接收通知的聊天室
