@@ -6,8 +6,9 @@ Get your ftx funding payments information and send you through Line Notify bot. 
 ![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/line.jpg)
 
 ### All you have to prepare:
-1. [Line Notify API Key](https://notify-bot.line.me/zh_TW/)：到網站申請一組API_KEY，並連結到你要接收通知的聊天室
+1. [Line Notify API Key](https://notify-bot.line.me/zh_TW/)：到網站申請一組API_KEY，並連結到你要接收通知的聊天室 (在[這裡](https://notify-bot.line.me/my/)產生你的API Token)
 2. [FTX API Key](https://ftx.com/profile)：需要一組能夠讀取到套利子帳戶的API KEY，唯獨權限即可。
+3. [Heroku Account](https://signup.heroku.com/login)：創建一個 Heroku 帳號來 host自己的 bot
 
 ### One Click Deployment with Heroku
 <a href="https://www.heroku.com/deploy/?template=https://github.com/henry2423/ftx-line-notify/tree/docker">
