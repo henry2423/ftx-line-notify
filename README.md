@@ -25,7 +25,7 @@ Get your ftx funding payments information and send you through Line Notify bot. 
 7. Hit the `Deploy app` button, should see the green check if deploy succeed.
 ![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/deploy-finish.png)
 8. Go to `Manage App` -> `Resource` -> Enable the Free Dynos manually.
-![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/enable-cron.jpg)
+![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/enable-cron.png)
 
 --- 
 ### Run the Docker image manually
