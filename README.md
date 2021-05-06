@@ -11,7 +11,7 @@ Get your ftx funding payments information and send you through Line Notify bot. 
 3. [Heroku Account](https://signup.heroku.com/login)：創建一個 Heroku 帳號來 host自己的 bot
 
 ### One Click Deployment with Heroku
-<a href="https://www.heroku.com/deploy/?template=https://github.com/henry2423/ftx-line-notify/tree/docker">
+<a href="https://www.heroku.com/deploy/?template=https://github.com/henry2423/ftx-line-notify/tree/heroku">
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
 </a>
 
@@ -24,6 +24,8 @@ Get your ftx funding payments information and send you through Line Notify bot. 
 ![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/parameter-setup.png)
 7. Hit the `Deploy app` button, should see the green check if deploy succeed.
 ![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/deploy-finish.png)
+8. Go to `Manage App` -> `Resource` -> Enable the Free Dynos manually.
+![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/enable-cron.jpg)
 
 --- 
 ### Run the Docker image manually
@@ -41,6 +43,7 @@ $ docker run \
 -e ftx_sub_account='your_ftx_sub_account' \
 -d henry2423/ftx-line-notify:latest
 ```
+4. The bot will be triggered automatically based on the `cronjobs` file settings.
 
 ### Contribution
 - [maya142857/ftx-line-notify](https://github.com/maya142857/ftx-line-notify)
