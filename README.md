@@ -3,7 +3,7 @@
 ## Description
 透過 Line Notify 獲得每日期現套利收益報告，每小時提供當一小時獲利，每天UTC 00:00提供前一天獲利，效果如下圖。
 
-![image](https://github.com/maya142857/ftx-line-notify/blob/main/.img/per-day.png)
+![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/line.jpg)
 
 ## 使用說明
 
@@ -12,15 +12,19 @@
 2. [FTX API Key](https://ftx.com/profile)：需要一組能夠讀取到套利子帳戶的API KEY，唯獨權限即可。
 
 ### One Click Deployment with Heroku
-1. Click the `Deploy to Heroku` button.
 <a href="https://www.heroku.com/deploy/?template=https://github.com/henry2423/ftx-line-notify/tree/docker">
   <img src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
 </a>
-2. You will see a Create New App page
-2. Decide your App name, can be anything, just to be unique.
-3. Type in FYX api key, secret and the subaccount you want to monitor.
-4. Type in Line api key.
-5. Hit the `Deploy app` button and wait for few minutes.
+
+1. Click the `Deploy to Heroku` button.
+2. You will see a Create New App page.
+![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/start-deploy.png)
+3. Decide your App name, can be anything, just to be unique.
+4. Type in FYX api key, secret and the subaccount you want to monitor.
+5. Type in Line api key.
+![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/parameter-setup.png)
+7. Hit the `Deploy app` button, should see the green check if deploy succeed.
+![image](https://github.com/henry2423/ftx-line-notify/blob/docker/.img/deploy-finish.png)
 
 --- 
 ### Run the Docker image manually
