@@ -6,6 +6,8 @@ import hmac
 import json
 import datetime
 import requests
+from datetime import datetime
+import os
 
 class FtxClient:
     _ENDPOINT = 'https://ftx.com/api/'
@@ -61,6 +63,9 @@ class FtxClient:
     def get_funding_payments(self,future:str) -> List[dict]:
         return self._get('funding_payments',{'future':future})
 
+    def get_all_funding_payments(self) -> List[dict]:
+        return self._get('funding_payments')
+
     def get_borrow_history(self)->List[dict]:
         return self._get('spot_margin/borrow_history',{'coin':'USD'})
 
@@ -69,31 +74,38 @@ class FtxClient:
 
 
 if __name__ == "__main__":
-    LINE_API_KEY = 'LINE_NOTIFY_API_KEY'
-    subaccount = FtxClient('API_KEY','API_SECRET','SUBACCOUNT_NAME')
-    coinlist = ['SOL-PERP','HOLY-PERP'] #套利幣種
-    
+    LINE_API_KEY = os.environ.get('line_api_key')
+    subaccount = FtxClient(os.environ.get('ftx_api_key'),os.environ.get('ftx_api_secret'),os.environ.get('ftx_sub_account'))
+
     total = 0
     account = subaccount.get_account()
     balance = subaccount.get_balances()
     for coin in balance:
         total = total + coin['usdValue']
+
+    # 現在小時
+    current_time = datetime.utcnow().strftime('%Y-%m-%dT%H:00:00+00:00')
     
     # USD利息支出
-    cost = subaccount.get_borrow_history()[0]['cost']
-    
+    all_cost_list = subaccount.get_borrow_history()
+    cost = 0
+    for cost_list in all_cost_list:
+        if cost_list['time'] == current_time:
+            cost = cost_list['cost']
+            break
+
     # 資金費率收入
+    all_funding_payments = subaccount.get_all_funding_payments()
     payment = 0
-    for coin in coinlist:
-        funding_payments = subaccount.get_funding_payments(future=coin)
-        payment = payment + funding_payments[0]['payment']
+    for funding_payment in all_funding_payments:
+        if funding_payment['time'] == current_time:
+            payment = payment + funding_payment['payment']
     
-    print ('本次收益：' + str(round((-payment-cost),2)) +
+    print ('本次收益：' + str(round((-payment-cost),3)) +
     '\n當次年化：' + str(round(((-payment-cost)*24*365/total*100),2)) + '%' +
     '\n帳戶餘額：' + str(round(total,2)) +
     '\n保證金：' + str(round((account['marginFraction']*100),2))+ '%' #lower than 3% will be liquidated
     )
-
 
     # Line Notify
     headers = {
@@ -101,7 +113,7 @@ if __name__ == "__main__":
         "Content-Type": "application/x-www-form-urlencoded"
     }
     params = {"message": ' 期現套利'
-    '\n本次收益：' + str(round((-payment-cost),2)) +
+    '\n本次收益：' + str(round((-payment-cost),3)) +
     '\n當次年化：' + str(round(((-payment-cost)*24*365/total*100),2)) + '%' +
     '\n帳戶餘額：' + str(round(total,2)) +
     '\n保證金：' + str(round((account['marginFraction']*100),2))+ '%' }

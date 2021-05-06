@@ -1,6 +1,12 @@
 # set base image (host OS)
 FROM python:3-alpine
 
+# set the environment variable
+ENV line_api_key='line_api_key'
+ENV ftx_api_key='ftx_api_key'
+ENV ftx_api_secret='ftx_api_secret'
+ENV ftx_sub_account='ftx_sub_account'
+
 # set the working directory in the container
 WORKDIR /code
 

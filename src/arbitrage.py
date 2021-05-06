@@ -6,6 +6,8 @@ import hmac
 import json
 import datetime
 import requests
+from datetime import datetime, timedelta
+import os
 
 class FtxClient:
     _ENDPOINT = 'https://ftx.com/api/'
@@ -62,6 +64,9 @@ class FtxClient:
     def get_funding_payments(self,future:str) -> List[dict]:
         return self._get('funding_payments',{'future':future})
 
+    def get_all_funding_payments(self) -> List[dict]:
+        return self._get('funding_payments')
+
     def get_borrow_history(self)->List[dict]:
         return self._get('spot_margin/borrow_history',{'coin':'USD'})
 
@@ -70,28 +75,35 @@ class FtxClient:
 
 
 if __name__ == "__main__":
-    LINE_API_KEY = 'LINE_NOTIFY_API_KEY'
-    subaccount = FtxClient('API_KEY','API_SECRET','SUBACCOUNT_NAME')
-    coinlist = ['BTC-PERP','ETH-PERP'] #套利幣種
+    LINE_API_KEY = os.environ.get('line_api_key')
+    subaccount = FtxClient(os.environ.get('ftx_api_key'),os.environ.get('ftx_api_secret'),os.environ.get('ftx_sub_account'))
     
     total = 0
     account = subaccount.get_account()
     balance = subaccount.get_balances()
     for coin in balance:
         total = total + coin['usdValue']
-    
+
+    # 過去24小時 
+    current_time = datetime.utcnow()
+    past_24h_time_set = {current_time.strftime('%Y-%m-%dT%H:00:00+00:00')}
+    for i in range(23):
+        past_time = current_time - timedelta(hours=i)
+        past_24h_time_set.add(past_time.strftime('%Y-%m-%dT%H:00:00+00:00'))
+
     # USD利息支出
+    all_cost_list = subaccount.get_borrow_history()
     cost_24h = 0
-    borrow_history = subaccount.get_borrow_history()
-    for i in range(24):
-        cost_24h = cost_24h + borrow_history[i]['cost']
+    for cost_list in all_cost_list:
+        if cost_list['time'] in past_24h_time_set:
+            cost_24h = cost_24h + cost_list['cost']
 
     # 資金費率收入
+    all_funding_payments = subaccount.get_all_funding_payments()
     payment_24h = 0
-    for coin in coinlist:
-        funding_payments = subaccount.get_funding_payments(future=coin)
-        for i in range(24):
-            payment_24h = payment_24h + funding_payments[i]['payment']
+    for funding_payment in all_funding_payments:
+        if funding_payment['time'] in past_24h_time_set:
+            payment_24h = payment_24h + funding_payment['payment']
     
     print ('昨日收益：' + str(round((-payment_24h-cost_24h),2)) +
     '\n當日年化：' + str(round(((-payment_24h-cost_24h)*365/total*100),2)) + '%' +

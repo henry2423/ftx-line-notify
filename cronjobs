@@ -1,2 +1,2 @@
 5 * * * * python /code/arbitrage-hour.py
-0 0 * * * python /code/arbitrage.py
+1 0 * * * python /code/arbitrage.py
