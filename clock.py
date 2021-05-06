@@ -1,5 +1,9 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
 from subprocess import call
+import os
+
+os.environ['TZ'] = 'UTC'
 
 sched = BlockingScheduler()
 
